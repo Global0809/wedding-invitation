@@ -194,6 +194,50 @@ body.cinema #skipBtn{display:block}
   background:radial-gradient(120% 100% at 50% 0%,#4b0c20,#1c040e 70%)}
 #fatal .card{max-width:420px;margin:6vh 20px;padding:34px 26px;text-align:center;border:1px solid rgba(232,195,104,.6);
   border-radius:18px;background:rgba(30,6,15,.6)}
+/* ---- living gold + text entrances ---- */
+.goldtext{background-size:220% 100%;animation:goldShift 7s ease-in-out infinite}
+@keyframes goldShift{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+#caption.show .c-dev,#caption.show .c-script{animation:capIn 1.1s cubic-bezier(.2,.7,.25,1) both}
+#caption.show .c-sub{animation:capIn 1.1s .22s cubic-bezier(.2,.7,.25,1) both}
+#caption.show .c-orn{animation:ornIn 1.5s both}
+#caption.show .c-line{animation:lineGrow 1.3s .35s both}
+@keyframes capIn{from{opacity:0;transform:translateY(20px) scale(.95);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes ornIn{from{opacity:0;letter-spacing:1.3em}to{opacity:.9;letter-spacing:.5em}}
+@keyframes lineGrow{from{width:0;opacity:0}to{width:120px;opacity:1}}
+/* ---- luxurious card reveal ---- */
+#sheet{overflow:visible}
+#sheet::before{content:"";position:absolute;inset:0 0 auto 0;height:100%;border-radius:26px 26px 0 0;pointer-events:none;z-index:2;
+  background:linear-gradient(115deg,transparent 32%,rgba(255,230,170,.16) 46%,rgba(255,236,190,.34) 50%,rgba(255,230,170,.16) 54%,transparent 68%);
+  background-size:260% 100%;background-position:130% 0}
+#sheet.open::before{animation:sheen 2s ease .55s}
+@keyframes sheen{from{background-position:130% 0}to{background-position:-60% 0}}
+#sheet.open #sheetBody>*{animation:rise .7s cubic-bezier(.2,.7,.25,1) both}
+#sheet.open #sheetBody>*:nth-child(1){animation-delay:.15s}#sheet.open #sheetBody>*:nth-child(2){animation-delay:.24s}
+#sheet.open #sheetBody>*:nth-child(3){animation-delay:.33s}#sheet.open #sheetBody>*:nth-child(4){animation-delay:.42s}
+#sheet.open #sheetBody>*:nth-child(5){animation-delay:.5s}#sheet.open #sheetBody>*:nth-child(6){animation-delay:.58s}
+#sheet.open #sheetBody>*:nth-child(7){animation-delay:.66s}#sheet.open #sheetBody>*:nth-child(n+8){animation-delay:.74s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+/* safety: if animations are throttled, settle everything visible */
+#sheet.settled #sheetBody>*{animation:none;opacity:1;transform:none}
+#sheet.settled #sheetSeal{animation:none;transform:translateX(-50%) scale(1)}
+#sheetSeal{position:absolute;left:50%;top:-25px;transform:translateX(-50%) scale(0);z-index:3;
+  width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--script);font-size:19px;color:#3a1608;
+  background:radial-gradient(circle at 34% 30%,#fdf0c8,#e0b45e 55%,#b9863a);
+  border:2px solid #8a5f22;box-shadow:0 4px 18px rgba(0,0,0,.55),inset 0 0 0 4px rgba(138,95,34,.35),inset 0 0 14px rgba(120,75,20,.45)}
+#sheet.open #sheetSeal{animation:sealPop .8s cubic-bezier(.34,1.5,.5,1) .35s both}
+@keyframes sealPop{0%{transform:translateX(-50%) scale(0) rotate(-30deg)}70%{transform:translateX(-50%) scale(1.14) rotate(4deg)}100%{transform:translateX(-50%) scale(1) rotate(0)}}
+/* ---- "it's alive" hints ---- */
+#touchHint{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%);z-index:9;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center}
+#touchHint.show{opacity:1}
+#touchHint .hand{font-size:46px;display:inline-block;animation:handSwipe 1.7s ease-in-out infinite;filter:drop-shadow(0 4px 14px rgba(0,0,0,.65))}
+@keyframes handSwipe{0%,100%{transform:translateX(-36px) rotate(-10deg)}50%{transform:translateX(36px) rotate(10deg)}}
+#touchHint .ht{margin-top:10px;font-size:14.5px;letter-spacing:.1em;color:#ffeccb;line-height:1.7;
+  background:rgba(26,7,14,.78);padding:9px 18px;border-radius:16px;border:1px solid rgba(232,195,104,.55)}
+.tapmark{position:absolute;width:38px;height:38px;transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .4s}
+.tapmark.on{opacity:1}
+.tapmark::before{content:"";position:absolute;inset:0;border:2px solid rgba(242,197,106,.95);border-radius:50%;animation:ringPulse 1.5s ease-out infinite}
+.tapmark::after{content:"👆";position:absolute;inset:0;display:grid;place-items:center;font-size:16px;animation:pulse 1.5s infinite}
 /* ---- speech bubbles / voice notes ---- */
 #bubbles{position:fixed;inset:0;pointer-events:none;z-index:8;overflow:hidden}
 .bub{position:absolute;left:0;top:0;transform:translate(-50%,-112%);max-width:52vw;padding:7px 13px;
@@ -248,7 +292,9 @@ body.cinema #skipBtn{display:block}
 
 <!-- details pill + bottom sheet -->
 <div id="detailsPill">✦ &nbsp;INVITATION&nbsp; ✦</div>
+<div id="touchHint"><div class="hand">👆</div><div class="ht">This is a living world — drag &amp; tap!<br>छूकर देखिए, सब कुछ ज़िंदा है ✨</div></div>
 <div id="sheet">
+  <div id="sheetSeal"></div>
   <div id="sheetHead"><div id="sheetHandle"></div></div>
   <div id="sheetBody"></div>
 </div>
@@ -563,9 +609,9 @@ async function buildSky(){
     g.fillStyle=gr; g.fillRect(0,0,w,h);
   });
   const moon = new THREE.Sprite(new THREE.SpriteMaterial({map:moonTex, transparent:true, depthWrite:false, fog:false}));
-  moon.scale.set(11,11,1); moon.position.set(-34,40,-78); scene.add(moon);
-  const moonH = new THREE.Sprite(new THREE.SpriteMaterial({map:halo, transparent:true, depthWrite:false, fog:false, blending:THREE.AdditiveBlending, opacity:.8}));
-  moonH.scale.set(34,34,1); moonH.position.copy(moon.position); scene.add(moonH);
+  moon.scale.set(30,30,1); moon.position.set(-30,30,-88); scene.add(moon);
+  const moonH = new THREE.Sprite(new THREE.SpriteMaterial({map:halo, transparent:true, depthWrite:false, fog:false, blending:THREE.AdditiveBlending, opacity:.9}));
+  moonH.scale.set(78,78,1); moonH.position.copy(moon.position); scene.add(moonH);
 
   /* drifting wisps of cloud */
   const cloudTex=canvasTex(256,128,(g,w,h)=>{
@@ -2020,7 +2066,43 @@ function say(obj, html, dur=3, {off=1.75, cls='', wave=false, who=''}={}){
   setTimeout(()=>b.el.classList.add('on'),60);
   return b;
 }
+/* pulsing "tap me" markers over characters */
+const tapMarks=[]; let needHint=true, nextIdleHint=0;
+function markObj(obj,y,dur=6){
+  const el=document.createElement('div'); el.className='tapmark';
+  $('#bubbles').appendChild(el);
+  tapMarks.push({el,obj,y,until:worldTime+dur});
+  setTimeout(()=>el.classList.add('on'),40);
+}
+function hideHints(){
+  $('#touchHint').classList.remove('show');
+  for(const m of tapMarks) m.until=Math.min(m.until,worldTime+.3);
+}
+function showTouchHint(){
+  $('#touchHint').classList.add('show');
+  markObj(queenFig,2.1,7); if(pandit) markObj(pandit,1.5,7);
+  if(elephants[0]) markObj(elephants[0].root,3,7);
+  setTimeout(()=>$('#touchHint').classList.remove('show'),5200);
+}
+function updateMarks(){
+  for(let i=tapMarks.length-1;i>=0;i--){
+    const m=tapMarks[i];
+    if(worldTime>m.until){ m.el.classList.remove('on'); if(worldTime>m.until+.5){ m.el.remove(); tapMarks.splice(i,1); } continue; }
+    m.obj.getWorldPosition(_bv); _bv.y+=m.y;
+    const d=_bv.distanceTo(camera.position);
+    _bv.project(camera);
+    if(_bv.z>1||d>34){ m.el.style.left='-999px'; continue; }
+    m.el.style.left=((_bv.x*.5+.5)*innerWidth)+'px';
+    m.el.style.top =((-_bv.y*.5+.5)*innerHeight)+'px';
+  }
+  /* gentle re-hint when idle in explore */
+  if(mode==='explore' && worldTime-orbit.lastIdle>24 && worldTime>nextIdleHint && tapMarks.length===0 && tappables.length){
+    nextIdleHint=worldTime+34;
+    const tp=pick(tappables); markObj(tp.obj, tp.yCenter+1, 6);
+  }
+}
 function updateBubbles(){
+  updateMarks();
   for(const b of bubblePool){
     if(!b.busy) continue;
     if(worldTime>b.until){ b.el.classList.remove('on'); if(worldTime>b.until+.4){ b.busy=false; b.el.style.left='-999px'; } continue; }
@@ -2244,6 +2326,7 @@ const ptrs=new Map();
 let pinchD0=0, dist0=9, tapInfo=null, lastMoveT=0;
 const cv=renderer.domElement;
 cv.addEventListener('pointerdown',e=>{
+  hideHints();
   ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(ptrs.size===1){ tapInfo={x:e.clientX,y:e.clientY,t:performance.now()};
     orbit.dragging=true; orbit.vTheta=orbit.vPhi=0; lastMoveT=performance.now(); }
@@ -2480,6 +2563,7 @@ function icsHref(){
 }
 function renderSheet(){
   const I=INVITE, conf=I.detailsConfirmed;
+  $('#sheetSeal').textContent=`${I.groomName[0]}♥${I.brideName[0]}`;
   const evRows=I.events.map(e=>`
     <div class="ev"><div class="e-ico">${e.icon}</div>
       <div><div class="e-name">${e.name}<small>${e.hindi}</small></div></div>
@@ -2535,8 +2619,20 @@ function startCountdown(){
   tick(); setInterval(tick,30000);
 }
 const sheet=$('#sheet');
-function openSheet(){ sheet.classList.add('open'); $('#detailsPill').classList.remove('show'); }
-function closeSheet(){ sheet.classList.remove('open'); if(mode==='explore') $('#detailsPill').classList.add('show'); }
+let settleT;
+function openSheet(){
+  sheet.classList.remove('settled'); sheet.classList.add('open');
+  clearTimeout(settleT); settleT=setTimeout(()=>sheet.classList.add('settled'),1900);
+  $('#detailsPill').classList.remove('show');
+  Music.bell(880,.05,.4); Music.bell(587.33,.04,.75);
+}
+function closeSheet(){
+  sheet.classList.remove('open');
+  if(mode==='explore'){
+    $('#detailsPill').classList.add('show');
+    if(needHint){ needHint=false; setTimeout(showTouchHint,500); }
+  }
+}
 $('#sheetHead').addEventListener('click',closeSheet);
 $('#detailsPill').addEventListener('click',openSheet);
 let sheetY0=null;
